@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>balder jobs</title>
+</head>
+<body>
+  <h1>balder: {{ counter }}kr</h1>
+  <form action="{{ url_for('increment_balder') }}" method="post">
+    <label for="amount">Amount:</label>
+    <input type="number" id="amount" name="amount" value="1" required>
+    <button type="submit">Increment</button>
+  </form>
+  <form action="{{ url_for('decrement_balder') }}" method="post">
+    <label for="amount">Amount:</label>
+    <input type="number" id="amount" name="amount" value="1" required>
+    <button type="submit">Decrement</button>
+  </form>
+  <ul>
+    {% for button in buttons %}
+      <li>
+        <form action="{{ url_for('increment_balder_by', amount=button.amount) }}" method="post">
+          <input type="hidden" name="button_label" value="{{ button.label }}">
+          <button type="submit">{{ button.label }}: {{ button.amount }}kr</button>
+        </form>
+      </li>
+    {% endfor %}
+    {% for button in template_buttons %}
+      <li>
+        <form action="{{ url_for('increment_balder_by', amount=button.amount) }}" method="post">
+          <input type="hidden" name="button_label" value="{{ button.label }}">
+          <button type="submit">{{ button.label }}: {{ button.amount }}kr</button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+  <h2>Last 20 changes</h2>
+  <ul>
+    {% for entry in log %}
+      <li>{{ entry.date }}: {{ entry.change }} ({{ entry.button_label }})</li>
+    {% endfor %}
+  </ul>
+
+
+  <script>
+    function incrementByAmount(amount, label) {
+      fetch(`/balder/increment_by/${amount}`, {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          window.location.reload();
+        } else {
+          console.error('Failed to increment counter');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+[
+    {
+        "label": "Dishwasher",
+        "amount": 5
+    },
+    {
+        "label": "Laundry",
+        "amount": 10
+    },
+    {
+        "label": "Cleaning",
+        "amount": 20
+    }
+  ]
+  
