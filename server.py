@@ -5,6 +5,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 debug = False
+port = 2009
 
 # Paths to the JSON files
 COUNTER_FILE = 'counters.json'
@@ -237,4 +238,4 @@ if __name__ == '__main__':
     if debug:
         app.run(debug=True, port=2009)
     elif debug == False:
-        app.run(debug=False, host='0.0.0.0', port=2009)
+        app.run(debug=False, host='0.0.0.0', port=port)
