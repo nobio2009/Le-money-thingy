@@ -2,10 +2,9 @@ from flask import Flask, render_template, request, redirect, url_for
 import json
 import os
 from datetime import datetime
+from config import *
 
 app = Flask(__name__)
-debug = False
-port = 2009
 
 # Paths to the JSON files
 COUNTER_FILE = 'counters.json'
@@ -236,6 +235,6 @@ def decrement(name):
 
 if __name__ == '__main__':
     if debug:
-        app.run(debug=True, port=2009)
+        app.run(debug=True, port=port)
     elif debug == False:
         app.run(debug=False, host='0.0.0.0', port=port)
