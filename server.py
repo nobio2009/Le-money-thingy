@@ -59,7 +59,7 @@ def noa():
     log = read_log('noa')
     buttons = read_buttons()
     template_buttons = read_template_buttons('noa')
-    return render_template('index.html', counter=counters['noa'], log=log[-20:], buttons=buttons, template_buttons=template_buttons)
+    return render_template('index.html', counter=counters['noa'], log=log[-20:][::-1], buttons=buttons, template_buttons=template_buttons)
 
 @app.route('/milo')
 def milo():
@@ -67,7 +67,7 @@ def milo():
     log = read_log('milo')
     buttons = read_buttons()
     template_buttons = read_template_buttons('milo')
-    return render_template('milo.html', counter=counters['milo'], log=log[-20:], buttons=buttons, template_buttons=template_buttons)
+    return render_template('milo.html', counter=counters['milo'], log=log[-20:][::-1], buttons=buttons, template_buttons=template_buttons)
 
 @app.route('/balder')
 def balder():
@@ -75,7 +75,7 @@ def balder():
     log = read_log('balder')
     buttons = read_buttons()
     template_buttons = read_template_buttons('balder')
-    return render_template('balder.html', counter=counters['balder'], log=log[-20:], buttons=buttons, template_buttons=template_buttons)
+    return render_template('balder.html', counter=counters['balder'], log=log[-20:][::-1], buttons=buttons, template_buttons=template_buttons)
 
 @app.route('/lauge')
 def lauge():
@@ -83,7 +83,7 @@ def lauge():
     log = read_log('lauge')
     buttons = read_buttons()
     template_buttons = read_template_buttons('lauge')
-    return render_template('lauge.html', counter=counters['lauge'], log=log[-20:], buttons=buttons, template_buttons=template_buttons)
+    return render_template('lauge.html', counter=counters['lauge'], log=log[-20:][::-1], buttons=buttons, template_buttons=template_buttons)
 
 @app.route('/noa/increment', methods=['POST'])
 def increment_noa():
@@ -197,15 +197,16 @@ def increment(name):
         amount = int(request.form.get('amount', 1))
     except ValueError:
         amount = 1
+    reason = request.form.get('reason', '')
     counters[name] += amount
 
     log = read_log(name)
     log_entry = {
         'date': datetime.now().strftime('%d-%m-%Y'),
-        'change': f'+{amount}'
+        'change': f'+{amount}',
+        'reason': reason
     }
     log.append(log_entry)
-    #log.append({'change': f'+{amount}', 'timestamp': datetime.now().isoformat()})
     write_log(name, log)
     write_counters(counters)
 
@@ -219,15 +220,16 @@ def decrement(name):
         amount = int(request.form.get('amount', 1))
     except ValueError:
         amount = 1
+    reason = request.form.get('reason', '')
     counters[name] -= amount
 
     log = read_log(name)
     log_entry = {
         'date': datetime.now().strftime('%d-%m-%Y'),
-        'change': f'-{amount}'
+        'change': f'-{amount}',
+        'reason': reason
     }
     log.append(log_entry)
-    #log.append({'change': f'-{amount}', 'timestamp': datetime.now().isoformat()})
     write_log(name, log)
     write_counters(counters)
 

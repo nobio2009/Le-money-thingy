@@ -10,11 +10,15 @@
   <form action="{{ url_for('increment_noa') }}" method="post">
     <label for="amount">Amount:</label>
     <input type="number" id="amount" name="amount" value="1" required>
+    <label for="reason">Reason:</label>
+    <input type="text" id="reason" name="reason">
     <button type="submit">Increment</button>
   </form>
   <form action="{{ url_for('decrement_noa') }}" method="post">
     <label for="amount">Amount:</label>
     <input type="number" id="amount" name="amount" value="1" required>
+    <label for="reason">Reason:</label>
+    <input type="text" id="reason" name="reason">
     <button type="submit">Decrement</button>
   </form>
   <ul>
@@ -38,10 +42,9 @@
   <h2>Last 20 changes</h2>
   <ul>
     {% for entry in log %}
-      <li>{{ entry.date }}: {{ entry.change }} ({{ entry.button_label }})</li>
+      <li>{{ entry.date }}: {{ entry.change }} ({{ entry.reason or entry.button_label }})</li>
     {% endfor %}
   </ul>
-
 
   <script>
     function incrementByAmount(amount, label) {
