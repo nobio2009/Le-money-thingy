@@ -3,45 +3,56 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>milo jobs</title>
+  <title>Milo jobs</title>
 </head>
 <body>
-  <h1>milo: {{ counter }}kr</h1>
+  <h1>Milo: {{ counter }}kr</h1>
+  <!--Premade jobs-->
+  <li>
+    <ul>
+      {% for button in buttons %}
+        <li>
+          <form action="{{ url_for('increment_milo_by', amount=button.amount) }}" method="post">
+            <input type="hidden" name="button_label" value="{{ button.label }}">
+            <button type="submit">{{ button.label }}: {{ button.amount }}kr</button>
+          </form>
+        </li>
+      {% endfor %}
+      {% for button in template_buttons %}
+        <li>
+          <form action="{{ url_for('increment_milo_by', amount=button.amount) }}" method="post">
+            <input type="hidden" name="button_label" value="{{ button.label }}">
+            <button type="submit">{{ button.label }}: {{ button.amount }}kr</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  </li>
+  <!--Transaction log-->
+  <ul>
+  <h2>Last 20 changes</h2>
+  <ul>
+    {% for entry in log %}
+      <li>{{ entry.date }}: {{ entry.change }} ({{ entry.reason or entry.button_label }})</li>
+    {% endfor %}
+  </ul>
+  <br>
+  <br>
+  <!--Custom input-->
   <form action="{{ url_for('increment_milo') }}" method="post">
     <label for="amount">Amount:</label>
     <input type="number" id="amount" name="amount" value="1" required>
+    <label for="reason">Reason:</label>
+    <input type="text" id="reason" name="reason">
     <button type="submit">Increment</button>
   </form>
   <form action="{{ url_for('decrement_milo') }}" method="post">
     <label for="amount">Amount:</label>
     <input type="number" id="amount" name="amount" value="1" required>
+    <label for="reason">Reason:</label>
+    <input type="text" id="reason" name="reason">
     <button type="submit">Decrement</button>
   </form>
-  <ul>
-    {% for button in buttons %}
-      <li>
-        <form action="{{ url_for('increment_milo_by', amount=button.amount) }}" method="post">
-          <input type="hidden" name="button_label" value="{{ button.label }}">
-          <button type="submit">{{ button.label }}: {{ button.amount }}kr</button>
-        </form>
-      </li>
-    {% endfor %}
-    {% for button in template_buttons %}
-      <li>
-        <form action="{{ url_for('increment_milo_by', amount=button.amount) }}" method="post">
-          <input type="hidden" name="button_label" value="{{ button.label }}">
-          <button type="submit">{{ button.label }}: {{ button.amount }}kr</button>
-        </form>
-      </li>
-    {% endfor %}
-  </ul>
-  <h2>Last 20 changes</h2>
-  <ul>
-    {% for entry in log %}
-      <li>{{ entry.date }}: {{ entry.change }} ({{ entry.button_label }})</li>
-    {% endfor %}
-  </ul>
-
 
   <script>
     function incrementByAmount(amount, label) {
