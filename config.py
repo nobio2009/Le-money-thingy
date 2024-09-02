@@ -1,5 +1,5 @@
 # Server configuration
-debug = True
+debug = False
 port = 2009
 
 # Page configuration
